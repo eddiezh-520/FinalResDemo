@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
 public class RegisterActivity extends BaseActivity {
@@ -41,7 +43,7 @@ public class RegisterActivity extends BaseActivity {
         mBtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(getApplicationContext(),"test register activity",Toast.LENGTH_SHORT).show();
             }
         });
     }
