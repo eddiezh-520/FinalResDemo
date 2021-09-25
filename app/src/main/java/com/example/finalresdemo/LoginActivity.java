@@ -2,6 +2,7 @@ package com.example.finalresdemo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,6 +17,8 @@ import com.example.finalresdemo.bean.User;
 import com.example.finalresdemo.biz.UserBiz;
 import com.example.finalresdemo.net.CommonCallback;
 import com.example.finalresdemo.utils.Constant;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.cookie.CookieJarImpl;
 
 public class LoginActivity extends BaseActivity {
 
@@ -25,6 +28,15 @@ public class LoginActivity extends BaseActivity {
     private Button mbtLogin;
     private TextView mTvRegister;
     private UserBiz userBiz =new UserBiz();
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CookieJarImpl cookieJar = (CookieJarImpl)OkHttpUtils.getInstance().getOkHttpClient().cookieJar();
+        cookieJar.getCookieStore().removeAll();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +45,25 @@ public class LoginActivity extends BaseActivity {
 
         initView();
         initEvent();
+        initIntent(getIntent());
+    }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        initIntent(intent);
+    }
+
+    private void initIntent(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+        String username = intent.getStringExtra(USERNAME);
+        String password = intent.getStringExtra(PASSWORD);
+
+        mEtUsername.setText(username);
+        mEtPassword.setText(password);
     }
 
     private void initView() {
@@ -96,6 +126,14 @@ public class LoginActivity extends BaseActivity {
         Intent intent = new Intent(this,OrderActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public static void launch(Context context, String username, String password) {
+        Intent intent = new Intent(context,LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(USERNAME,username);
+        intent.putExtra(PASSWORD,password);
+        context.startActivity(intent);
     }
 
     private void displayToast(String text) {
