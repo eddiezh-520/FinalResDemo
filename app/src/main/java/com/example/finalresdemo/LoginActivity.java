@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,9 +15,11 @@ import android.widget.Toast;
 import com.example.finalresdemo.bean.User;
 import com.example.finalresdemo.biz.UserBiz;
 import com.example.finalresdemo.net.CommonCallback;
+import com.example.finalresdemo.utils.Constant;
 
 public class LoginActivity extends BaseActivity {
 
+    private final String TAG = "LoginActivity";
     private EditText mEtUsername;
     private EditText mEtPassword;
     private Button mbtLogin;
@@ -47,26 +50,26 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
                 String username = mEtUsername.getText().toString();
                 String password = mEtPassword.getText().toString();
-
+                Log.d(TAG,"test username:" + username + "\t password:" + password);
                 if(TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(),"账户或密码不能为空",Toast.LENGTH_SHORT).show();
+                    displayToast(Constant.ACCOUNT_OR_PWD_EMPTY);
                     //不能继续往下执行
                     return;
                 }
 
                 startLoadingProgress();
-//                System.out.println("test username:" + username + "test password:" + password);
+
                 userBiz.login(username, password, new CommonCallback<User>() {
                     @Override
                     public void onError(Exception e) {
                         stopLoadingProgress();
-                        Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                        displayToast(e.getMessage());
                     }
 
                     @Override
                     public void onSuccess(User response) {
                         stopLoadingProgress();
-                        Toast.makeText(getApplicationContext(),"登陆成功",Toast.LENGTH_SHORT).show();
+                        displayToast(Constant.LOGIN_SUCCESS);
                         //保存用户信息
                         UserHolder.getInstance().setUser(response);
                         toOrderActivity();
@@ -95,4 +98,7 @@ public class LoginActivity extends BaseActivity {
         finish();
     }
 
+    private void displayToast(String text) {
+        Toast.makeText(this,text,Toast.LENGTH_SHORT).show();
+    }
 }
