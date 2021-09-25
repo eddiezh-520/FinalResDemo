@@ -55,7 +55,7 @@ public class LoginActivity extends BaseActivity {
                 }
 
                 startLoadingProgress();
-                System.out.println("test username:" + username + "test password:" + password);
+//                System.out.println("test username:" + username + "test password:" + password);
                 userBiz.login(username, password, new CommonCallback<User>() {
                     @Override
                     public void onError(Exception e) {
