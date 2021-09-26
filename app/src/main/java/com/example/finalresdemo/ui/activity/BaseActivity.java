@@ -1,4 +1,4 @@
-package com.example.finalresdemo;
+package com.example.finalresdemo.ui.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import com.example.finalresdemo.R;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -46,5 +48,9 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         stopLoadingProgress();
         mProgressDialog = null;
+    }
+
+    protected void toLoginActivity() {
+
     }
 }

@@ -31,4 +31,8 @@ public class UserBiz {
                 .build()
                 .execute(commonCallback);
     }
+
+    public void onDestroy() {
+        OkHttpUtils.getInstance().cancelTag(this);
+    }
 }
