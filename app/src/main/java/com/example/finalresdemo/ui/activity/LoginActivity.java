@@ -1,6 +1,4 @@
-package com.example.finalresdemo;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.finalresdemo.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.finalresdemo.R;
+import com.example.finalresdemo.UserHolder;
 import com.example.finalresdemo.bean.User;
 import com.example.finalresdemo.biz.UserBiz;
 import com.example.finalresdemo.net.CommonCallback;
@@ -138,5 +138,11 @@ public class LoginActivity extends BaseActivity {
 
     private void displayToast(String text) {
         Toast.makeText(this,text,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        userBiz.onDestroy();
     }
 }

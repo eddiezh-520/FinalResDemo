@@ -1,15 +1,13 @@
-package com.example.finalresdemo;
+package com.example.finalresdemo.ui.activity;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.finalresdemo.R;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;

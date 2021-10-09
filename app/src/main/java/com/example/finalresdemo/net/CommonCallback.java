@@ -5,12 +5,20 @@ import android.util.Log;
 
 import com.example.finalresdemo.utils.GsonUtil;
 import com.google.gson.internal.$Gson$Types;
+
 import com.zhy.http.okhttp.callback.StringCallback;
+
 import org.json.JSONObject;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import okhttp3.Call;
 
+import okhttp3.Call;
+import okhttp3.Response;
+
+/**
+ * Created by zhy on 16/10/23.
+ */
 public abstract class CommonCallback<T> extends StringCallback {
     Type mType;
 
@@ -43,7 +51,9 @@ public abstract class CommonCallback<T> extends StringCallback {
 
             JSONObject resp = new JSONObject(response);
             int resultCode = resp.getInt("resultCode");
+            Log.e("zhy", "resultCode :" + resultCode);
             if (resultCode == 1) {
+//                Type type = new TypeToken<Response<T>>(){}.getType();
                 onSuccess((T) GsonUtil.getGson().fromJson(resp.getString("data"), mType));
             } else {
                 onError(new RuntimeException(resp.getString("resultMessage")));
@@ -54,3 +64,4 @@ public abstract class CommonCallback<T> extends StringCallback {
         }
     }
 }
+
