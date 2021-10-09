@@ -12,14 +12,14 @@ import java.util.Map;
 
 public class OrderBiz {
 
-    public void listByPage(int currentPage, CommonCallback<List<Order>> commonCallback) {
-
-        OkHttpUtils.post()
+    public void listByPage(int currentPage, CommonCallback<List<Order>> callback) {
+        OkHttpUtils
+                .post()
                 .url(Config.baseUrl + "order_find")
                 .tag(this)
-                .addParams("currentPage",currentPage + "")
+                .addParams("currentPage", currentPage + "")
                 .build()
-                .execute(commonCallback);
+                .execute(callback);
     }
 
 

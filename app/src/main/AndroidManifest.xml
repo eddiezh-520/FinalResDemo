@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.finalresdemo">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.finalresdemo"
+    >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:theme="@style/Theme.FinalResDemo">
+        android:theme="@style/Theme.FinalResDemo"
+        tools:replace="android:appComponentFactory"
+        android:appComponentFactory=".">
         <activity android:name=".ui.activity.RegisterActivity"></activity>
         <activity android:name=".ui.activity.OrderActivity" />
         <activity android:name=".ui.activity.LoginActivity" />

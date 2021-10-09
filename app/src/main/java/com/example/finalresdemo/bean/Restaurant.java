@@ -7,7 +7,7 @@ public class Restaurant implements Serializable {
     private int id;
     private String icon;
     private String name;
-    private String description;
+    private String desc;
     private float price;
 
     public int getId() {
@@ -34,12 +34,12 @@ public class Restaurant implements Serializable {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public float getPrice() {

@@ -18,7 +18,7 @@ public class Order implements Serializable {
     private Restaurant restaurant;
     private int count;
     private float price;
-    private List<ProductVo> ps;
+    public List<ProductVo> ps;
 
     public int getId() {
         return id;
