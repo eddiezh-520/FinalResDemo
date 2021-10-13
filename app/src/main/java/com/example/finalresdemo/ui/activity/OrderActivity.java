@@ -39,6 +39,7 @@ public class OrderActivity extends BaseActivity {
     private OrderAdapter orderAdapter;
     private List<Order> mDatas = new ArrayList<>();
     private OrderBiz mOrderBiz = new OrderBiz();
+    private int mCurrentPage = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class OrderActivity extends BaseActivity {
 
         initView();
         initEvent();
-//        loadData();
+        loadData();
     }
 
     private void initView() {
@@ -113,18 +114,19 @@ public class OrderActivity extends BaseActivity {
             public void onError(Exception e) {
                 stopLoadingProgress();
                 Toast.makeText(OrderActivity.this,e.toString(),Toast.LENGTH_SHORT).show();
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
             }
 
             @Override
             public void onSuccess(List<Order> response) {
                 stopLoadingProgress();
                 Toast.makeText(OrderActivity.this,"订单更新成功",Toast.LENGTH_SHORT).show();
+                mCurrentPage = 0;
                 mDatas.clear();
                 mDatas.addAll(response);
-                System.out.println("test mDatas.length:" + mDatas.size());
-                System.out.println("test mDatas:" + mDatas);
-//                Log.d(TAG,"test list:" + mDatas);
-//                System.out.println("run to here");
+                Log.d(TAG,"test mDatas:" + mDatas.toString());
                 orderAdapter.notifyDataSetChanged();
                 if (mSwipeRefreshLayout.isRefreshing()) {
                     mSwipeRefreshLayout.setRefreshing(false);
@@ -134,6 +136,29 @@ public class OrderActivity extends BaseActivity {
     }
 
     private void loadMore() {
+        startLoadingProgress();
+        mOrderBiz.listByPage(++mCurrentPage, new CommonCallback<List<Order>>() {
+            @Override
+            public void onError(Exception e) {
+                stopLoadingProgress();
+                Toast.makeText(OrderActivity.this,e.toString(),Toast.LENGTH_SHORT).show();
+                mCurrentPage --;
+                mSwipeRefreshLayout.setPullUpRefreshing(false);
+            }
 
+            @Override
+            public void onSuccess(List<Order> response) {
+                stopLoadingProgress();
+                if (response.size() == 0) {
+                    Toast.makeText(OrderActivity.this,"已经没有更多订单了",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(OrderActivity.this,"订单加载成功",Toast.LENGTH_SHORT).show();
+                mDatas.addAll(response);
+                Log.d(TAG,"test mDatas:" + mDatas.toString());
+                orderAdapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setPullUpRefreshing(false);
+            }
+        });
     }
 }

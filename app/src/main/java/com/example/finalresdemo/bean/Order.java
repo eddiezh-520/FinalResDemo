@@ -67,4 +67,17 @@ public class Order implements Serializable {
     public void setPs(List<ProductVo> ps) {
         this.ps = ps;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "productMap=" + productMap +
+                ", id=" + id +
+                ", date=" + date +
+                ", restaurant=" + restaurant +
+                ", count=" + count +
+                ", price=" + price +
+                ", ps=" + ps +
+                '}';
+    }
 }
