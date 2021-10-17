@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalresdemo.R;
 import com.example.finalresdemo.config.Config;
+import com.example.finalresdemo.ui.activity.ProductDetailActivity;
 import com.example.finalresdemo.ui.vo.ProductItem;
 import com.squareup.picasso.Picasso;
 
@@ -88,7 +89,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    ProductDetailActivity.launch(mContext,mProductItemList.get(getLayoutPosition()));
                 }
             });
 
