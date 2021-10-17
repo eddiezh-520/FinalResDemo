@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalResDemo"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".ui.activity.ProductDetailActivity"></activity>
+        <activity android:name=".ui.activity.OrderDetailActivity"></activity>
+        <activity android:name=".ui.activity.ProductDetailActivity" />
         <activity android:name=".ui.activity.ProductListActivity" />
         <activity android:name=".ui.activity.RegisterActivity" />
         <activity android:name=".ui.activity.OrderActivity" />

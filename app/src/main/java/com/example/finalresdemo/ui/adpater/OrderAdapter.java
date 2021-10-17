@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.finalresdemo.R;
 import com.example.finalresdemo.bean.Order;
 import com.example.finalresdemo.config.Config;
+import com.example.finalresdemo.ui.activity.OrderDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -69,6 +70,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderAdapter
             resName = itemView.findViewById(R.id.id_tv_name);
             resDesc = itemView.findViewById(R.id.id_tv_desc);
             itemPrice = itemView.findViewById(R.id.id_tv_price);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OrderDetailActivity.launch(mContext,mDatas.get(getLayoutPosition()));
+                }
+            });
         }
     }
 }
