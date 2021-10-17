@@ -12,7 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.finalresdemo.R;
+import com.example.finalresdemo.bean.Order;
 import com.example.finalresdemo.bean.Product;
+import com.example.finalresdemo.biz.OrderBiz;
 import com.example.finalresdemo.biz.ProductListBiz;
 import com.example.finalresdemo.net.CommonCallback;
 import com.example.finalresdemo.ui.adpater.ProductListAdapter;
@@ -31,10 +33,12 @@ public class ProductListActivity extends BaseActivity {
     private ProductListAdapter mProductListAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ProductListBiz mProductBiz = new ProductListBiz();
+    private OrderBiz mOrderBiz = new OrderBiz();
     private List<ProductItem> productItemList = new ArrayList<>();
     private int mCurrentPage = 0;
     private float mTotalPrice;
     private int mTotalCount;
+    private Order mOrder = new Order();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +88,8 @@ public class ProductListActivity extends BaseActivity {
                 mTvCount.setText("数量：" + mTotalCount);
                 mTotalPrice += productItem.getPrice();
                 mBtnPay.setText(mTotalPrice +"元 立即支付");
+
+                mOrder.addProduct(productItem);
             }
 
             @Override
@@ -91,7 +97,12 @@ public class ProductListActivity extends BaseActivity {
                 mTotalCount --;
                 mTvCount.setText("数量：" + mTotalCount);
                 mTotalPrice -= productItem.getPrice();
+                if (mTotalCount <= 0) {
+                    mTotalPrice = 0;
+                }
                 mBtnPay.setText(mTotalPrice +"元 立即支付");
+
+                mOrder.removeProduct(productItem);
             }
         });
 
@@ -100,6 +111,31 @@ public class ProductListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
+               if (mTotalCount <= 0) {
+                   Toast.makeText(ProductListActivity.this,"还没选择菜品，请选择后支付",Toast.LENGTH_SHORT).show();
+                   return;
+               }
+
+               startLoadingProgress();
+               mOrder.setCount(mTotalCount);
+               mOrder.setPrice(mTotalPrice);
+               mOrder.setRestaurant(productItemList.get(0).getRestaurant());
+
+               mOrderBiz.add(mOrder, new CommonCallback<String>() {
+                   @Override
+                   public void onError(Exception e) {
+                       stopLoadingProgress();
+                       Toast.makeText(ProductListActivity.this,e.toString(),Toast.LENGTH_SHORT).show();
+                   }
+
+                   @Override
+                   public void onSuccess(String response) {
+                       stopLoadingProgress();
+                       Toast.makeText(ProductListActivity.this,"支付订单成功",Toast.LENGTH_SHORT).show();
+                       setResult(RESULT_OK);
+                       finish();
+                   }
+               });
             }
         });
     }
@@ -111,7 +147,7 @@ public class ProductListActivity extends BaseActivity {
             @Override
             public void onError(Exception e) {
                 stopLoadingProgress();
-                Toast.makeText(ProductListActivity.this,e.toString(),Toast.LENGTH_SHORT);
+                Toast.makeText(ProductListActivity.this,e.toString(),Toast.LENGTH_SHORT).show();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
 
@@ -142,7 +178,7 @@ public class ProductListActivity extends BaseActivity {
             public void onError(Exception e) {
                 stopLoadingProgress();
                 mCurrentPage--;
-                Toast.makeText(ProductListActivity.this,e.toString(),Toast.LENGTH_SHORT);
+                Toast.makeText(ProductListActivity.this,e.toString(),Toast.LENGTH_SHORT).show();
                 mSwipeRefreshLayout.setPullUpRefreshing(false);
             }
 
