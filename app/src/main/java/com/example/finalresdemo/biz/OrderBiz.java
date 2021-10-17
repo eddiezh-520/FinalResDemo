@@ -43,4 +43,8 @@ public class OrderBiz {
                 .execute(commonCallback);
     }
 
+
+    public void onDestroy() {
+        OkHttpUtils.getInstance().cancelTag(this);
+    }
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -102,7 +103,8 @@ public class OrderActivity extends BaseActivity {
         mBtnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(OrderActivity.this,"点餐",Toast.LENGTH_SHORT);
+                Intent intent = new Intent(OrderActivity.this,ProductListActivity.class);
+                startActivityForResult(intent,1001);
             }
         });
     }
@@ -160,5 +162,11 @@ public class OrderActivity extends BaseActivity {
                 mSwipeRefreshLayout.setPullUpRefreshing(false);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mOrderBiz.onDestroy();
     }
 }
